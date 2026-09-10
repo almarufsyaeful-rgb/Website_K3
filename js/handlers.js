@@ -771,18 +771,43 @@ async function renderDokumenTable() {
 }
 
 async function downloadDocumentFile(id, filename) {
-  showToast(`Mengunduh file: ${filename || 'dokumen'}...`);
+  showToast(`Menyiapkan unduhan: ${filename || 'dokumen'}...`);
+  
   try {
-    const downloadUrl = await window.K3API.getDocumentDownloadUrl(id);
+    // 1. Cari data dokumen berdasarkan ID dari database lokal (AppState)
+    const doc = window.AppState.dokumen.find(d => d.id === id);
+    
+    if (!doc || !doc.filePath) {
+      showToast('Maaf, link file tidak ditemukan.', 'danger');
+      return;
+    }
+
+    // 2. Ambil link Cloudinary aslinya
+    let downloadUrl = doc.filePath;
+
+    // 3. Tambahkan "fl_attachment" agar Cloudinary memaksa browser untuk langsung DOWNLOAD (bukan hanya preview)
+    // Cloudinary URL contoh: https://res.cloudinary.com/nama-cloud/image/upload/v12345/folder/file.pdf
+    if (downloadUrl.includes('res.cloudinary.com')) {
+      const uploadIndex = downloadUrl.indexOf('/upload/');
+      if (uploadIndex !== -1) {
+        // Sisipkan parameter fl_attachment ke dalam URL
+        downloadUrl = downloadUrl.slice(0, uploadIndex + 8) + 'fl_attachment/' + downloadUrl.slice(uploadIndex + 8);
+      }
+    }
+
+    // 4. Eksekusi proses unduh dengan paksa tab baru
     const link = document.createElement('a');
     link.href = downloadUrl;
+    link.target = "_blank"; // Buka di tab baru (wajib untuk file eksternal)
+    
     if (filename) link.setAttribute('download', filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
   } catch (err) {
     console.error('Download error:', err);
-    window.location.href = `/api/dokumen/download/${encodeURIComponent(id)}`;
+    showToast('Gagal mengunduh file.', 'danger');
   }
 }
 window.downloadDocumentFile = downloadDocumentFile;
