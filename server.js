@@ -111,3 +111,4 @@ app.listen(PORT, () => {
   console.log(`📡 REST API     : http://localhost:${PORT}/api/health`);
   console.log('================================================================');
 });
+module.exports = app;
