@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Website Resmi Bidang Ketahanan dan Kesejahteraan Keluarga (K3) - Disdalduk KB Kota Semarang. Mewujudkan keluarga yang sehat, sejahtera, berkualitas dan berdaya.">
+  <title>Bidang K3 - Disdalduk KB Kota Semarang</title>
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/views.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       Top Navigation Header
+       ======================================================================== -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="#beranda" class="brand-logo" id="main-brand-logo">
+        <div class="brand-badge-icon">
+          <i class="fa-solid fa-shield-heart"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">K3 <span style="font-weight: 500; font-size: 0.95rem; color: var(--secondary);">Semarang</span></span>
+          <span class="brand-tagline">Disdalduk KB Kota Semarang</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="nav-desktop" id="nav-desktop-menu">
+        <a href="#beranda" class="nav-link active" data-nav="beranda" id="nav-link-beranda">Beranda</a>
+        <a href="#profil" class="nav-link" data-nav="profil" id="nav-link-profil">Profil K3</a>
+        <a href="#program" class="nav-link" data-nav="program" id="nav-link-program">Program</a>
+        <a href="#kegiatan" class="nav-link" data-nav="kegiatan" id="nav-link-kegiatan">Kegiatan</a>
+        <a href="#turunan" class="nav-link" data-nav="turunan" id="nav-link-turunan">Turunan K3</a>
+        <a href="#data-dokumen" class="nav-link" data-nav="dokumen" id="nav-link-dokumen">Dokumen</a>
+      </nav>
+
+      <!-- Action Buttons (Search & Admin Switcher) -->
+      <div class="nav-actions">
+        <button class="header-search-btn" title="Cari data..." onclick="handleGlobalSearch()" id="btn-global-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <a href="#admin" class="btn-admin-nav" id="btn-toggle-admin" title="Buka Panel Admin">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Admin</span>
+        </a>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" id="btn-mobile-menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       Main Content Views
+       ======================================================================== -->
+  <main class="main-content">
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 1: Halaman Beranda (Home)
+         ---------------------------------------------------------------------- -->
+    <section id="view-beranda" class="page-view active">
+      <div class="container-standard">
+        
+        <!-- Hero Section -->
+        <div class="hero-section">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <i class="fa-solid fa-award"></i>
+              <span>Pemerintah Kota Semarang</span>
+            </div>
+            <h1 class="hero-title">Bidang K3</h1>
+            <div class="hero-subtitle">Ketahanan dan Kesejahteraan Keluarga</div>
+            <p class="hero-desc">
+              Mewujudkan keluarga yang sehat, sejahtera, berkualitas dan berdaya saing melalui pembinaan, edukasi, dan pendampingan berkelanjutan.
+            </p>
+            <a href="#program" class="btn btn-primary btn-lg" id="hero-btn-program">
+              <span>Lihat Program</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+          <div class="hero-graphic">
+            <div class="hero-placeholder-box">
+              <i class="fa-solid fa-people-roof"></i>
+              <span>Ketahanan Keluarga Indonesia</span>
+              <small style="opacity: 0.8; margin-top: 4px;">Disdalduk KB Kota Semarang</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Quick Nav Cards -->
+        <div class="quick-nav-grid">
+          <div class="quick-card" onclick="location.hash='#program'" id="quick-card-program">
+            <div class="quick-card-icon">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <div class="quick-card-title">Program K3</div>
+          </div>
+          <div class="quick-card" onclick="location.hash='#kegiatan'" id="quick-card-kegiatan">
+            <div class="quick-card-icon">
+              <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <div class="quick-card-title">Kegiatan K3</div>
+          </div>
+          <div class="quick-card" onclick="location.hash='#turunan'" id="quick-card-turunan">
+            <div class="quick-card-icon">
+              <i class="fa-solid fa-sitemap"></i>
+            </div>
+            <div class="quick-card-title">Turunan K3</div>
+          </div>
+          <div class="quick-card" onclick="location.hash='#data-dokumen'" id="quick-card-dokumen">
+            <div class="quick-card-icon">
+              <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <div class="quick-card-title">Dokumen</div>
+          </div>
+        </div>
+
+        <!-- Berita & Informasi Terbaru Section -->
+        <div class="section-header">
+          <h2 class="section-title">Berita & Informasi Terbaru</h2>
+          <a href="#kegiatan" class="section-link" id="link-lihat-semua-berita">
+            <span>Lihat Semua</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="news-grid" id="beranda-news-grid">
+          <!-- Populated by JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 2: Halaman Pengertian K3
+         ---------------------------------------------------------------------- -->
+    <section id="view-pengertian" class="page-view">
+      <div class="container-standard">
+        
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="#profil">Profil K3</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Pengertian K3</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Main Content -->
+          <div class="content-body">
+            <div class="page-heading-row">
+              <h2 class="page-title">Pengertian K3</h2>
+            </div>
+
+            <!-- Definition 2-col Box -->
+            <div class="definition-hero-card">
+              <div class="definition-two-col">
+                <div class="definition-thumb">
+                  <i class="fa-solid fa-house-chimney-user"></i>
+                </div>
+                <div class="definition-text">
+                  <p>
+                    <strong>K3 (Ketahanan dan Kesejahteraan Keluarga)</strong> adalah upaya untuk mewujudkan keluarga yang sehat, sejahtera, berkualitas, dan berdaya saing melalui pembinaan, pelayanan, dan pemberdayaan keluarga.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Goals Section -->
+            <div class="goals-card">
+              <h3 class="goals-title">
+                <i class="fa-solid fa-bullseye"></i>
+                <span>Tujuan K3</span>
+              </h3>
+              <ul class="goals-list">
+                <li class="goals-list-item">
+                  <i class="fa-solid fa-circle-dot"></i>
+                  <span>Meningkatkan ketahanan keluarga secara fisik, ekonomi, sosial, dan psikologis.</span>
+                </li>
+                <li class="goals-list-item">
+                  <i class="fa-solid fa-circle-dot"></i>
+                  <span>Meningkatkan kesejahteraan keluarga melalui kemandirian ekonomi dan pemenuhan hak keluarga.</span>
+                </li>
+                <li class="goals-list-item">
+                  <i class="fa-solid fa-circle-dot"></i>
+                  <span>Mewujudkan keluarga berkualitas yang mampu melahirkan generasi penerus bangsa yang unggul.</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Callout Quote Box -->
+            <div class="callout-quote-box">
+              <i class="fa-solid fa-quote-left callout-quote-icon"></i>
+              <div class="callout-quote-text">
+                "K3 merupakan bagian penting dalam pembangunan nasional karena keluarga adalah unit terkecil masyarakat yang berperan besar dalam membentuk generasi penerus bangsa."
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 3: Halaman Program K3
+         ---------------------------------------------------------------------- -->
+    <section id="view-program" class="page-view">
+      <div class="container-standard">
+
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Program K3</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Content Body -->
+          <div class="content-body">
+            <div class="page-heading-row">
+              <h2 class="page-title">Program K3</h2>
+            </div>
+
+            <!-- Filter & Search -->
+            <div class="filter-bar">
+              <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="program-search" class="search-input" placeholder="Cari program...">
+              </div>
+              <select id="program-filter-kategori" class="filter-select">
+                <option value="all">Semua Kategori</option>
+                <option value="Pembinaan Keluarga">Pembinaan Keluarga</option>
+                <option value="Pemberdayaan Ekonomi">Pemberdayaan Ekonomi</option>
+                <option value="Kesehatan & Gizi">Kesehatan & Gizi</option>
+                <option value="Pengasuhan Anak">Pengasuhan Anak</option>
+              </select>
+            </div>
+
+            <!-- Program List -->
+            <div class="programs-list" id="programs-list-container">
+              <!-- Rendered by JS -->
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 4: Halaman Kegiatan K3
+         ---------------------------------------------------------------------- -->
+    <section id="view-kegiatan" class="page-view">
+      <div class="container-standard">
+
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Kegiatan K3</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Content Body -->
+          <div class="content-body">
+            <div class="page-heading-row">
+              <h2 class="page-title">Kegiatan K3</h2>
+              <button class="btn btn-primary" onclick="openAddKegiatanModal()" id="btn-tambah-kegiatan">
+                <i class="fa-solid fa-plus"></i>
+                <span>Tambah Kegiatan</span>
+              </button>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+              <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="kegiatan-search" class="search-input" placeholder="Cari kegiatan...">
+              </div>
+              <select id="kegiatan-filter-tahun" class="filter-select">
+                <option value="all">Semua Tahun</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+              </select>
+              <select id="kegiatan-filter-lokasi" class="filter-select">
+                <option value="all">Semua Lokasi</option>
+                <option value="Tembalang">Kec. Tembalang</option>
+                <option value="Genuk">Kec. Genuk</option>
+                <option value="Banyumanik">Kec. Banyumanik</option>
+                <option value="Semarang Barat">Kec. Semarang Barat</option>
+                <option value="Ngaliyan">Kec. Ngaliyan</option>
+                <option value="Pedurungan">Kec. Pedurungan</option>
+              </select>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th class="col-no">No</th>
+                    <th>Nama Kegiatan</th>
+                    <th>Tanggal</th>
+                    <th>Lokasi</th>
+                    <th style="width: 165px; text-align: center;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="kegiatan-tbody">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-wrapper" id="kegiatan-pagination">
+              <!-- Rendered by JS -->
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 5: Halaman Turunan Bidang K3
+         ---------------------------------------------------------------------- -->
+    <section id="view-turunan" class="page-view">
+      <div class="container-standard">
+
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Turunan K3</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Content Body -->
+          <div class="content-body">
+            <div class="page-heading-row" style="margin-bottom: 1.25rem;">
+              <div>
+                <h2 class="page-title">Program & Layanan Keluarga (Turunan K3)</h2>
+                <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 4px;">
+                  Pilih kelompok program sesuai kebutuhan dan tahapan keluarga Anda
+                </div>
+              </div>
+            </div>
+
+            <!-- Friendly Intro Banner for Laypeople -->
+            <div class="turunan-intro-banner">
+              <div class="turunan-intro-icon">
+                <i class="fa-solid fa-people-roof"></i>
+              </div>
+              <div class="turunan-intro-content">
+                <h4>7 Pilar Layanan Pendampingan Keluarga Kota Semarang</h4>
+                <p>
+                  Disdalduk KB Kota Semarang hadir mendampingi seluruh fase hidup keluarga Anda: mulai dari merawat balita agar bebas stunting, membimbing anak remaja, menjaga kakek-nenek tetap bugar, wirausaha rumahan, hingga konsultasi masalah keluarga gratis.
+                </p>
+              </div>
+            </div>
+
+            <!-- Friendly Category Filter Tabs -->
+            <div class="turunan-filter-bar" id="turunan-filter-container">
+              <button class="turunan-filter-btn active" onclick="filterTurunanByCategory('all', this)">
+                <i class="fa-solid fa-layer-group"></i> Semua (7 Layanan)
+              </button>
+              <button class="turunan-filter-btn" onclick="filterTurunanByCategory('balita', this)">
+                👶 Balita & Anak
+              </button>
+              <button class="turunan-filter-btn" onclick="filterTurunanByCategory('remaja', this)">
+                🧑 Anak Remaja
+              </button>
+              <button class="turunan-filter-btn" onclick="filterTurunanByCategory('lansia', this)">
+                👵 Lansia (Kakek-Nenek)
+              </button>
+              <button class="turunan-filter-btn" onclick="filterTurunanByCategory('ekonomi', this)">
+                💼 Usaha Rumahan
+              </button>
+              <button class="turunan-filter-btn" onclick="filterTurunanByCategory('konseling', this)">
+                👨‍👩‍👧 Konseling Gratis
+              </button>
+            </div>
+
+            <!-- 7 Sub-units Grid -->
+            <div class="turunan-grid" id="turunan-grid-container">
+              <!-- Rendered by JS -->
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN: Halaman Detail Turunan Bidang K3 (Deskripsi & Tujuan Tanpa Dokumen)
+         ---------------------------------------------------------------------- -->
+    <section id="view-turunan-detail" class="page-view">
+      <div class="container-standard">
+
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="#turunan">Turunan K3</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current" id="turunan-detail-breadcrumb">Detail</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Content Body -->
+          <div class="content-body">
+            <div class="page-heading-row" style="margin-bottom: 1.5rem;">
+              <div>
+                <h2 class="page-title" id="turunan-detail-header-title">Detail Sub-Unit K3</h2>
+                <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 4px;" id="turunan-detail-header-tagline">Disdalduk KB Kota Semarang</div>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="#turunan" class="btn btn-secondary btn-sm">
+                  <i class="fa-solid fa-arrow-left"></i>
+                  <span>Kembali ke Turunan K3</span>
+                </a>
+                <a href="#input-data-bkb" class="btn btn-primary btn-sm" id="btn-turunan-to-bkb" style="display: none;">
+                  <i class="fa-solid fa-table-list"></i>
+                  <span>Data Kelompok BKB</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Detail Grid Layout -->
+            <div class="turunan-detail-layout">
+              <!-- Left Column: Deskripsi & Tujuan -->
+              <div class="turunan-detail-main">
+                
+                <!-- Deskripsi Card -->
+                <div class="card detail-content-card">
+                  <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 1.25rem;">
+                    <div id="turunan-detail-icon-circle" style="width: 52px; height: 52px; border-radius: 12px; background: rgba(37, 99, 235, 0.12); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">
+                      <i class="fa-solid fa-baby-carriage" id="turunan-detail-icon"></i>
+                    </div>
+                    <div>
+                      <span class="badge" id="turunan-detail-badge" style="background: var(--primary-subtle); color: var(--primary); font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 0.82rem;">BKB</span>
+                      <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--text-primary); margin: 4px 0 0 0;" id="turunan-detail-title">Bina Keluarga Balita</h3>
+                    </div>
+                  </div>
+                  <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 0.6rem;">
+                    <i class="fa-solid fa-circle-info" style="margin-right: 6px;"></i> Deskripsi Program
+                  </h4>
+                  <p id="turunan-detail-desc" style="color: var(--text-secondary); line-height: 1.8; font-size: 0.98rem; margin: 0;">
+                    <!-- Populated by JS -->
+                  </p>
+                </div>
+
+                <!-- Tujuan Program Card -->
+                <div class="card detail-content-card">
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem;">
+                    <i class="fa-solid fa-bullseye" style="font-size: 1.35rem; color: #10b981;"></i>
+                    <h3 style="font-size: 1.18rem; font-weight: 800; color: var(--text-primary); margin: 0;">Tujuan Program & Pelaksanaan</h3>
+                  </div>
+                  <ul id="turunan-detail-tujuan-list" class="turunan-detail-list">
+                    <!-- Populated by JS -->
+                  </ul>
+                </div>
+
+                <!-- Bentuk Layanan / Kegiatan Pokok Card -->
+                <div class="card detail-content-card">
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem;">
+                    <i class="fa-solid fa-list-check" style="font-size: 1.35rem; color: #0284c7;"></i>
+                    <h3 style="font-size: 1.18rem; font-weight: 800; color: var(--text-primary); margin: 0;">Bentuk Layanan & Kegiatan Pokok</h3>
+                  </div>
+                  <div id="turunan-detail-layanan-grid" class="turunan-layanan-grid">
+                    <!-- Populated by JS -->
+                  </div>
+                </div>
+
+                <!-- Cara Mengikuti atau Bertanya (Gratis) Card -->
+                <div class="card detail-content-card" style="background: #f0fdf4; border: 1px solid #bbf7d0;">
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.85rem;">
+                    <i class="fa-solid fa-circle-question" style="font-size: 1.35rem; color: #16a34a;"></i>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #166534; margin: 0;">Bagaimana Cara Mengikuti Program Ini?</h3>
+                  </div>
+                  <p style="font-size: 0.92rem; color: #15803d; line-height: 1.65; margin-bottom: 0.75rem;">
+                    Seluruh program dan layanan Bidang K3 ini <strong>disediakan 100% GRATIS</strong> bagi seluruh warga Kota Semarang.
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; color: #166534;">
+                    <li style="display: flex; gap: 8px; align-items: flex-start;">
+                      <i class="fa-solid fa-check" style="margin-top: 3px; color: #16a34a;"></i>
+                      <span><strong>Kader Posyandu / RT-RW:</strong> Tanyakan kepada kader Posyandu, PKK, atau TPK di lingkungan Anda mengenai jadwal kelompok binaan terdekat.</span>
+                    </li>
+                    <li style="display: flex; gap: 8px; align-items: flex-start;">
+                      <i class="fa-solid fa-check" style="margin-top: 3px; color: #16a34a;"></i>
+                      <span><strong>Penyuluh KB Kecamatan:</strong> Kunjungi Balai Penyuluhan KB yang berada di kantor kecamatan Anda di Kota Semarang.</span>
+                    </li>
+                    <li style="display: flex; gap: 8px; align-items: flex-start;">
+                      <i class="fa-solid fa-check" style="margin-top: 3px; color: #16a34a;"></i>
+                      <span><strong>Kantor Disdalduk KB Kota Semarang:</strong> Hubungi atau datang langsung ke Bidang K3 Disdalduk KB Kota Semarang.</span>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
+              <!-- Right Column: Info Panel -->
+              <div class="turunan-detail-sidebar">
+                <div class="card detail-content-card">
+                  <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--primary); margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+                    <i class="fa-solid fa-circle-nodes" style="margin-right: 6px;"></i> Profil Singkat
+                  </h4>
+                  
+                  <div class="info-item-row" style="margin-bottom: 1rem;">
+                    <i class="fa-solid fa-users" style="color: var(--primary); font-size: 1.1rem; margin-top: 2px;"></i>
+                    <div class="info-text-col">
+                      <span class="label">Sasaran Program</span>
+                      <span class="val" id="turunan-detail-target" style="font-size: 0.92rem; font-weight: 600;">-</span>
+                    </div>
+                  </div>
+
+                  <div class="info-item-row" style="margin-bottom: 1rem;">
+                    <i class="fa-solid fa-people-roof" style="color: #10b981; font-size: 1.1rem; margin-top: 2px;"></i>
+                    <div class="info-text-col">
+                      <span class="label">Kelompok Binaan</span>
+                      <span class="val" id="turunan-detail-kelompok" style="font-size: 1.05rem; font-weight: 700; color: var(--primary);">-</span>
+                    </div>
+                  </div>
+
+                  <div class="info-item-row" style="margin-bottom: 1rem;">
+                    <i class="fa-solid fa-building-columns" style="color: #6366f1; font-size: 1.1rem; margin-top: 2px;"></i>
+                    <div class="info-text-col">
+                      <span class="label">Koordinator</span>
+                      <span class="val" style="font-size: 0.92rem; font-weight: 600;">Bidang K3 Disdalduk KB</span>
+                    </div>
+                  </div>
+
+                  <div class="info-item-row" style="margin-bottom: 1.25rem;">
+                    <i class="fa-solid fa-map-location-dot" style="color: #ef4444; font-size: 1.1rem; margin-top: 2px;"></i>
+                    <div class="info-text-col">
+                      <span class="label">Cakupan Wilayah</span>
+                      <span class="val" style="font-size: 0.92rem; font-weight: 600;">16 Kecamatan se-Kota Semarang</span>
+                    </div>
+                  </div>
+
+                  <div style="padding-top: 1rem; border-top: 1px solid var(--border);">
+                    <a href="#turunan" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center;">
+                      <i class="fa-solid fa-list"></i> Lihat Semua Turunan K3
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Quick Switcher to Other Turunan Units -->
+                <div class="card detail-content-card">
+                  <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.75rem;">
+                    Sub-Unit Turunan K3 Lainnya:
+                  </div>
+                  <div id="turunan-quick-pills" style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <!-- Populated by JS -->
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 6: Halaman Input Data (contoh: BKB)
+         ---------------------------------------------------------------------- -->
+    <section id="view-input-data-bkb" class="page-view">
+      <div class="container-standard">
+
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="#turunan">Turunan K3</a>
+            <span class="breadcrumb-separator">/</span>
+            <span>BKB</span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Input Data</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Content Body (2 Columns) -->
+          <div class="content-body">
+            <div class="page-heading-row">
+              <h2 class="page-title">Input Data BKB</h2>
+            </div>
+
+            <div class="input-data-layout">
+              <!-- Left Form: Tambah Data -->
+              <div class="form-panel">
+                <h3 class="panel-title">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                  <span>Tambah Data</span>
+                </h3>
+                <form id="form-input-bkb">
+                  <input type="hidden" id="bkb-edit-id" value="">
+                  
+                  <div class="form-group">
+                    <label class="form-label" for="bkb-nama">Nama Kelompok <span class="req">*</span></label>
+                    <input type="text" id="bkb-nama" class="form-control" placeholder="Masukkan nama kelompok" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="bkb-alamat">Alamat <span class="req">*</span></label>
+                    <textarea id="bkb-alamat" class="form-control" placeholder="Masukkan alamat" required></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="bkb-ketua">Ketua <span class="req">*</span></label>
+                    <input type="text" id="bkb-ketua" class="form-control" placeholder="Nama ketua kelompok" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="bkb-anggota">Jumlah Anggota <span class="req">*</span></label>
+                    <input type="number" id="bkb-anggota" class="form-control" placeholder="Masukkan jumlah anggota" min="1" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="bkb-tahun">Tahun <span class="req">*</span></label>
+                    <select id="bkb-tahun" class="form-control" required>
+                      <option value="">Pilih tahun</option>
+                      <option value="2025" selected>2025</option>
+                      <option value="2024">2024</option>
+                      <option value="2023">2023</option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="bkb-submit-btn">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Simpan Data</span>
+                  </button>
+                </form>
+              </div>
+
+              <!-- Right Table: Data Terakhir -->
+              <div class="table-panel">
+                <h3 class="panel-title">
+                  <i class="fa-solid fa-table-list"></i>
+                  <span>Data Terakhir</span>
+                </h3>
+                <div class="table-responsive">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th class="col-no">No</th>
+                        <th>Nama Kelompok</th>
+                        <th>Tahun</th>
+                        <th style="width: 90px;">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="bkb-data-tbody">
+                      <!-- Rendered by JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 7: Halaman Data K3 (Daftar & Download)
+         ---------------------------------------------------------------------- -->
+    <section id="view-data-dokumen" class="page-view">
+      <div class="container-standard">
+
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Dokumen</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Content Body -->
+          <div class="content-body">
+            <div class="page-heading-row">
+              <h2 class="page-title">Data K3</h2>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="category-tabs">
+              <button class="category-tab-btn active" onclick="setDocCategory('SEMUA', this)">Semua</button>
+              <button class="category-tab-btn" onclick="setDocCategory('BKB', this)">BKB</button>
+              <button class="category-tab-btn" onclick="setDocCategory('BKR', this)">BKR</button>
+              <button class="category-tab-btn" onclick="setDocCategory('BKL', this)">BKL</button>
+              <button class="category-tab-btn" onclick="setDocCategory('UPPKA', this)">UPPKA</button>
+              <button class="category-tab-btn" onclick="setDocCategory('PIK-R', this)">PIK-R</button>
+              <button class="category-tab-btn" onclick="setDocCategory('PPKS', this)">PPKS</button>
+              <button class="category-tab-btn" onclick="setDocCategory('GENRE', this)">GENRE</button>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="filter-bar">
+              <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="dokumen-search" class="search-input" placeholder="Cari file...">
+              </div>
+              <button class="btn btn-primary" onclick="openUploadDocModal()" id="btn-upload-dokumen">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Upload Dokumen</span>
+              </button>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th class="col-no">No</th>
+                    <th>Nama File</th>
+                    <th>Jenis</th>
+                    <th>Tanggal Upload</th>
+                    <th style="width: 160px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="dokumen-tbody">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 8: Halaman Profil (Informasi Umum, Visi & Misi, Tugas & Fungsi)
+         ---------------------------------------------------------------------- -->
+    <section id="view-profil" class="page-view">
+      <div class="container-standard">
+
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Profil Bidang K3</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Content Body with Tabs -->
+          <div class="content-body">
+            <div class="page-heading-row">
+              <h2 class="page-title">Profil Bidang K3</h2>
+            </div>
+
+            <!-- Horizontal Tab Switchers -->
+            <div class="profil-nav-tabs">
+              <button class="profil-tab-btn active" onclick="switchProfilTab('info-umum', this)">Informasi Umum</button>
+              <button class="profil-tab-btn" onclick="switchProfilTab('visi-misi', this)">Visi & Misi</button>
+              <button class="profil-tab-btn" onclick="switchProfilTab('tugas-fungsi', this)">Tugas & Fungsi</button>
+            </div>
+
+            <!-- Tab 1: Informasi Umum -->
+            <div id="tab-pane-info-umum" class="profil-tab-pane active">
+              <div class="definition-hero-card">
+                <div class="definition-two-col">
+                  <div class="definition-thumb">
+                    <i class="fa-solid fa-building-columns"></i>
+                  </div>
+                  <div class="definition-text">
+                    <p>
+                      <strong>Bidang K3 (Ketahanan dan Kesejahteraan Keluarga)</strong> merupakan salah satu bidang di Disdalduk KB Kota Semarang yang memiliki peran strategis dalam mewujudkan keluarga yang sehat, sejahtera, berkualitas dan berdaya.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-body">
+                  <h3 style="font-size: 1.15rem; color: var(--primary); font-weight: 800; margin-bottom: 0.75rem;">
+                    <i class="fa-solid fa-heart-pulse" style="margin-right: 6px;"></i> Visi Singkat
+                  </h3>
+                  <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;">
+                    "Terwujudnya keluarga yang sehat, sejahtera, berkualitas dan berdaya saing."
+                  </p>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-body">
+                  <h3 style="font-size: 1.15rem; color: var(--primary); font-weight: 800; margin-bottom: 0.75rem;">
+                    <i class="fa-solid fa-list-check" style="margin-right: 6px;"></i> Misi Utama
+                  </h3>
+                  <ol style="margin-left: 1.5rem; line-height: 1.8; color: var(--text-secondary);">
+                    <li>Meningkatkan ketahanan keluarga.</li>
+                    <li>Meningkatkan kesejahteraan keluarga.</li>
+                    <li>Mewujudkan keluarga berkualitas.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 2: Visi & Misi Detailed -->
+            <div id="tab-pane-visi-misi" class="profil-tab-pane">
+              <div class="card" style="margin-bottom: 1.5rem; border-left: 4px solid var(--primary);">
+                <div class="card-body">
+                  <span class="badge badge-tag" style="margin-bottom: 0.75rem;">Visi Strategis Disdalduk KB Kota Semarang</span>
+                  <h3 style="font-size: 1.35rem; color: var(--primary-dark); font-weight: 800; line-height: 1.4;">
+                    "Terwujudnya Keluarga yang Sehat, Sejahtera, Berkualitas, dan Berdaya Saing Menuju Kota Semarang yang Maju dan Berkelanjutan"
+                  </h3>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">Misi Pembangunan Bidang K3</h4>
+                </div>
+                <div class="card-body">
+                  <ul class="goals-list">
+                    <li class="goals-list-item">
+                      <i class="fa-solid fa-circle-check"></i>
+                      <span><strong>1. Meningkatkan Ketahanan Keluarga:</strong> Mengembangkan kapasitas keluarga dalam pemenuhan fungsi keagamaan, sosial budaya, cinta kasih, perlindungan, dan reproduksi.</span>
+                    </li>
+                    <li class="goals-list-item">
+                      <i class="fa-solid fa-circle-check"></i>
+                      <span><strong>2. Meningkatkan Kesejahteraan Keluarga:</strong> Memberdayakan ekonomi keluarga melalui kelompok usaha binaan UPPKA dan kemitraan strategis.</span>
+                    </li>
+                    <li class="goals-list-item">
+                      <i class="fa-solid fa-circle-check"></i>
+                      <span><strong>3. Mewujudkan Keluarga Berkualitas:</strong> Mengoptimalkan pengasuhan balita (BKB), remaja (BKR/PIK-R/GenRe), dan pendampingan lansia tangguh (BKL).</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 3: Tugas & Fungsi -->
+            <div id="tab-pane-tugas-fungsi" class="profil-tab-pane">
+              <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-header">
+                  <h4 class="card-title"><i class="fa-solid fa-briefcase" style="margin-right: 6px;"></i> Tugas Pokok</h4>
+                </div>
+                <div class="card-body">
+                  <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1rem;">
+                    Bidang Ketahanan dan Kesejahteraan Keluarga mempunyai tugas melaksanakan perumusan rencana kerja, koordinasi pelaksanaan, fasilitasi, pembinaan teknis, monitoring, evaluasi dan pelaporan kebijakan operasional dalam program ketahanan dan kesejahteraan keluarga di wilayah Kota Semarang.
+                  </p>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title"><i class="fa-solid fa-diagram-project" style="margin-right: 6px;"></i> Rincian Fungsi</h4>
+                </div>
+                <div class="card-body">
+                  <ul class="goals-list">
+                    <li class="goals-list-item">
+                      <i class="fa-solid fa-check"></i>
+                      <span>Penyusunan rencana operasional dan petunjuk teknis pelaksanaan program ketahanan dan kesejahteraan keluarga.</span>
+                    </li>
+                    <li class="goals-list-item">
+                      <i class="fa-solid fa-check"></i>
+                      <span>Pelaksanaan fasilitasi dan pembinaan kelompok kegiatan Bina Keluarga Balita (BKB), Bina Keluarga Remaja (BKR), dan Bina Keluarga Lansia (BKL).</span>
+                    </li>
+                    <li class="goals-list-item">
+                      <i class="fa-solid fa-check"></i>
+                      <span>Pemberdayaan dan fasilitasi pengembangan Usaha Peningkatan Pendapatan Keluarga Akseptor (UPPKA).</span>
+                    </li>
+                    <li class="goals-list-item">
+                      <i class="fa-solid fa-check"></i>
+                      <span>Penyelenggaraan dan pengelolaan Pusat Pelayanan Keluarga Sejahtera (PPKS) dan Pusat Informasi Konseling Remaja (PIK-R).</span>
+                    </li>
+                    <li class="goals-list-item">
+                      <i class="fa-solid fa-check"></i>
+                      <span>Monitoring, evaluasi, dan penyusunan laporan akuntabilitas kinerja bidang ketahanan keluarga secara periodik.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 9: Halaman Program Detail
+         ---------------------------------------------------------------------- -->
+    <section id="view-program-detail" class="page-view">
+      <div class="container-standard">
+
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="#program">Program K3</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Detail</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Content Body -->
+          <div class="content-body">
+            <div class="page-heading-row">
+              <h2 class="page-title">Detail Program</h2>
+              <a href="#program" class="btn btn-secondary btn-sm">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Kembali ke Program</span>
+              </a>
+            </div>
+
+            <!-- Detail Card -->
+            <div class="detail-card">
+              <div class="detail-top-grid">
+                <div class="detail-thumb-box">
+                  <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="detail-main-info">
+                  <h3 class="detail-name" id="program-detail-title">Program Pembinaan Ketahanan Keluarga</h3>
+                  <p class="detail-desc" id="program-detail-desc">
+                    Program ini bertujuan untuk meningkatkan ketahanan keluarga melalui pembinaan, edukasi, dan pemberdayaan keluarga agar mampu menghadapi berbagai tantangan kehidupan.
+                  </p>
+
+                  <div class="detail-meta-box">
+                    <div class="meta-item">
+                      <span class="meta-item-label">Kategori</span>
+                      <span class="meta-item-value" id="program-detail-cat">Pembinaan Keluarga</span>
+                    </div>
+                    <div class="meta-item">
+                      <span class="meta-item-label">Pelaksana</span>
+                      <span class="meta-item-value" id="program-detail-pelaksana">Bidang K3</span>
+                    </div>
+                    <div class="meta-item">
+                      <span class="meta-item-label">Tahun</span>
+                      <span class="meta-item-value" id="program-detail-tahun">2025</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Related Activities -->
+              <div class="related-activities-box">
+                <h4 class="related-activities-title">Kegiatan Terkait</h4>
+                <ul class="related-activities-list" id="program-detail-kegiatan-list">
+                  <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Sosialisasi Ketahanan Keluarga</span>
+                  </li>
+                  <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Pelatihan Parenting</span>
+                  </li>
+                  <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Penyuluhan Gizi Keluarga</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 10: Halaman Kegiatan Detail
+         ---------------------------------------------------------------------- -->
+    <section id="view-kegiatan-detail" class="page-view">
+      <div class="container-standard">
+
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="#kegiatan">Kegiatan</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Detail</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Content Body -->
+          <div class="content-body">
+            <div class="page-heading-row">
+              <h2 class="page-title">Detail Kegiatan</h2>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="#kegiatan" class="btn btn-secondary btn-sm">
+                  <i class="fa-solid fa-arrow-left"></i>
+                  <span>Kembali ke Kegiatan</span>
+                </a>
+                <button class="btn btn-secondary btn-sm" onclick="openEditKegiatanModal(window.currentDetailKegiatanId)" title="Edit Data Kegiatan">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                  <span>Edit</span>
+                </button>
+                <button class="btn btn-danger btn-sm" style="background: #ef4444; color: #fff; border: 1px solid #dc2626;" onclick="deleteKegiatan(window.currentDetailKegiatanId)" title="Hapus Kegiatan Ini">
+                  <i class="fa-regular fa-trash-can"></i>
+                  <span>Hapus Kegiatan</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="kegiatan-detail-grid">
+              <!-- Left: Description & Documentation Gallery -->
+              <div class="card">
+                <div class="card-body">
+                  <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.75rem;">Deskripsi</h3>
+                  <p id="keg-detail-desc" style="color: var(--text-secondary); line-height: 1.7; font-size: 1rem; margin-bottom: 2rem;">
+                    Kegiatan ini bertujuan untuk meningkatkan pemahaman keluarga mengenai pentingnya ketahanan keluarga dalam menghadapi tantangan zaman.
+                  </p>
+
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin: 0;">Dokumentasi</h3>
+                    <button class="btn btn-primary btn-sm" onclick="openUploadFotoKegiatanModal()" id="btn-kelola-foto">
+                      <i class="fa-solid fa-camera"></i>
+                      <span>Ubah / Upload Foto</span>
+                    </button>
+                  </div>
+                  <div class="gallery-grid" id="keg-detail-gallery">
+                    <!-- Populated by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Info Card -->
+              <div class="kegiatan-info-card">
+                <h3 class="info-title" id="keg-detail-title">Sosialisasi Ketahanan Keluarga</h3>
+                
+                <div class="info-item-row">
+                  <i class="fa-regular fa-calendar"></i>
+                  <div class="info-text-col">
+                    <span class="label">Tanggal</span>
+                    <span class="val" id="keg-detail-tgl">10 Jun 2025</span>
+                  </div>
+                </div>
+
+                <div class="info-item-row">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <div class="info-text-col">
+                    <span class="label">Lokasi</span>
+                    <span class="val" id="keg-detail-lok">Kec. Tembalang</span>
+                  </div>
+                </div>
+
+                <div class="info-item-row">
+                  <i class="fa-solid fa-users"></i>
+                  <div class="info-text-col">
+                    <span class="label">Peserta</span>
+                    <span class="val" id="keg-detail-pes">50 orang</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 11: Halaman Dokumen Detail
+         ---------------------------------------------------------------------- -->
+    <section id="view-dokumen-detail" class="page-view">
+      <div class="container-standard">
+
+        <div class="breadcrumb-container">
+          <div class="breadcrumb">
+            <a href="#beranda"><i class="fa-solid fa-house"></i> Beranda</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="#data-dokumen">Dokumen</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Detail</span>
+          </div>
+        </div>
+
+        <div class="layout-with-sidebar">
+          <!-- Content Body -->
+          <div class="content-body">
+            <div class="page-heading-row">
+              <h2 class="page-title">Detail Dokumen</h2>
+              <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <a href="#data-dokumen" class="btn btn-secondary btn-sm">
+                  <i class="fa-solid fa-arrow-left"></i>
+                  <span>Kembali ke Dokumen</span>
+                </a>
+                <button class="btn btn-secondary btn-sm" onclick="openEditDocModal(window.currentDetailDokumenId)" title="Edit Data Dokumen">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                  <span>Edit</span>
+                </button>
+                <button class="btn btn-danger btn-sm" style="background: #ef4444; color: #fff; border: 1px solid #dc2626;" onclick="deleteDokumen(window.currentDetailDokumenId)" title="Hapus Dokumen Ini">
+                  <i class="fa-regular fa-trash-can"></i>
+                  <span>Hapus Dokumen</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="card" style="padding: 2rem;">
+              <!-- Top Preview & Meta -->
+              <div class="doc-detail-top">
+                <div class="doc-icon-preview" id="doc-detail-icon-box">
+                  <i class="fa-solid fa-file-pdf" id="doc-detail-icon-elem"></i>
+                  <span id="doc-detail-icon-label">PDF</span>
+                </div>
+                <div>
+                  <h3 style="font-size: 1.45rem; font-weight: 800; color: var(--primary); margin-bottom: 0.4rem;" id="doc-detail-judul">
+                    Panduan Program BKB 2025.pdf
+                  </h3>
+                  <div style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                    <span>Nama Berkas: <strong id="doc-detail-name">Panduan Program BKB 2025.pdf</strong></span>
+                    <span class="badge badge-bkb" id="doc-detail-kategori-badge">BKB</span>
+                  </div>
+                  <table class="doc-meta-table">
+                    <tr>
+                      <td class="lbl">Kategori</td>
+                      <td class="val">: <span id="doc-detail-kategori">BKB</span></td>
+                    </tr>
+                    <tr>
+                      <td class="lbl">Jenis / Format</td>
+                      <td class="val">: <span id="doc-detail-jenis">PDF</span></td>
+                    </tr>
+                    <tr>
+                      <td class="lbl">Ukuran Berkas</td>
+                      <td class="val">: <span id="doc-detail-size">3.4 MB</span></td>
+                    </tr>
+                    <tr>
+                      <td class="lbl">Tanggal Upload</td>
+                      <td class="val">: <span id="doc-detail-date">12 Apr 2025</span></td>
+                    </tr>
+                    <tr>
+                      <td class="lbl">Diunggah Oleh</td>
+                      <td class="val">: <span id="doc-detail-uploader">Admin K3</span></td>
+                    </tr>
+                    <tr>
+                      <td class="lbl">Status Berkas</td>
+                      <td class="val">: <span id="doc-detail-status" style="color: #10b981; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Siap Diunduh / Dilihat</span></td>
+                    </tr>
+                  </table>
+
+                  <div class="doc-actions-row">
+                    <button class="btn btn-primary" id="doc-detail-download-btn">
+                      <i class="fa-solid fa-download"></i>
+                      <span>Download Berkas</span>
+                    </button>
+                    <button class="btn btn-outline" id="doc-detail-view-btn">
+                      <i class="fa-regular fa-eye"></i>
+                      <span>Pratinjau di Modal</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div style="border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 1.5rem;">
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: var(--primary); margin-bottom: 0.6rem;">Deskripsi</h4>
+                <p id="doc-detail-desc" style="color: var(--text-secondary); line-height: 1.65; font-size: 0.98rem;">
+                  Dokumen ini berisi panduan pelaksanaan program BKB tahun 2025.
+                </p>
+              </div>
+
+              <!-- Inline Interactive File Preview Container -->
+              <div id="doc-detail-preview-section" style="border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+                  <h4 style="font-size: 1.1rem; font-weight: 800; color: var(--primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-table-cells"></i>
+                    <span>Pratinjau Isi Dokumen</span>
+                  </h4>
+                  <div id="doc-detail-sheet-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap;"></div>
+                </div>
+                <div id="doc-detail-preview-content" style="background: var(--surface-alt); border-radius: var(--radius-md); border: 1px solid var(--border); padding: 1rem; overflow-x: auto; min-height: 120px;">
+                  <!-- Dynamic preview rendered here -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         SCREEN 12: Halaman Admin (Dashboard)
+         ---------------------------------------------------------------------- -->
+    <section id="view-admin" class="page-view">
+      <div class="admin-view-container">
+
+        <!-- Admin Sidebar -->
+        <aside class="admin-sidebar">
+          <div style="padding: 1.5rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 38px; height: 38px; border-radius: var(--radius-sm); background: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff;">
+              <i class="fa-solid fa-gear"></i>
+            </div>
+            <div>
+              <div style="font-weight: 800; font-size: 1.1rem; color: #fff;">Admin K3</div>
+              <div style="font-size: 0.72rem; color: #94a3b8;">Kota Semarang</div>
+            </div>
+          </div>
+
+          <div class="admin-sidebar-menu">
+            <a href="#admin" class="admin-menu-link active">
+              <i class="fa-solid fa-gauge"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="#program" class="admin-menu-link">
+              <i class="fa-solid fa-layer-group"></i>
+              <span>Program</span>
+            </a>
+            <a href="#kegiatan" class="admin-menu-link">
+              <i class="fa-solid fa-calendar-days"></i>
+              <span>Kegiatan</span>
+            </a>
+            <a href="#data-dokumen" class="admin-menu-link">
+              <i class="fa-solid fa-folder-open"></i>
+              <span>Dokumen</span>
+            </a>
+            <a href="#turunan" class="admin-menu-link">
+              <i class="fa-solid fa-tags"></i>
+              <span>Kategori</span>
+            </a>
+            <a href="#input-data-bkb" class="admin-menu-link">
+              <i class="fa-solid fa-users"></i>
+              <span>User / Kelompok</span>
+            </a>
+            <a href="#beranda" class="admin-menu-link" style="margin-top: auto; color: #f87171;">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Logout</span>
+            </a>
+          </div>
+        </aside>
+
+        <!-- Admin Content Area -->
+        <div class="admin-content-area">
+          
+          <!-- Top Bar Info -->
+          <div class="admin-user-header">
+            <div>
+              <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">Dashboard</h2>
+              <div style="color: var(--text-muted); font-size: 0.88rem; margin-top: 0.2rem;">Ikhtisar data & aktivitas pengelolaan Bidang K3</div>
+            </div>
+            <div class="admin-user-badge">
+              <div class="admin-user-avatar">
+                <i class="fa-solid fa-user-shield"></i>
+              </div>
+              <div class="admin-user-info">
+                <span class="admin-user-name">Selamat Datang, Admin</span>
+                <span class="admin-user-role">Bidang K3 | Disdalduk KB Kota Semarang</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Stat Cards -->
+          <div class="admin-stat-cards">
+            <div class="stat-card" onclick="location.hash='#program'" style="cursor: pointer;">
+              <div class="stat-info">
+                <span class="stat-label">Total Program</span>
+                <span class="stat-value" id="admin-stat-program">12</span>
+              </div>
+              <div class="stat-icon-wrapper">
+                <i class="fa-solid fa-diagram-project"></i>
+              </div>
+            </div>
+
+            <div class="stat-card" onclick="location.hash='#kegiatan'" style="cursor: pointer;">
+              <div class="stat-info">
+                <span class="stat-label">Total Kegiatan</span>
+                <span class="stat-value" id="admin-stat-kegiatan">28</span>
+              </div>
+              <div class="stat-icon-wrapper">
+                <i class="fa-solid fa-calendar-check"></i>
+              </div>
+            </div>
+
+            <div class="stat-card" onclick="location.hash='#data-dokumen'" style="cursor: pointer;">
+              <div class="stat-info">
+                <span class="stat-label">Total Dokumen</span>
+                <span class="stat-value" id="admin-stat-dokumen">56</span>
+              </div>
+              <div class="stat-icon-wrapper">
+                <i class="fa-solid fa-file-shield"></i>
+              </div>
+            </div>
+
+            <div class="stat-card" onclick="location.hash='#turunan'" style="cursor: pointer;">
+              <div class="stat-info">
+                <span class="stat-label">Kelompok Binaan</span>
+                <span class="stat-value" id="admin-stat-kelompok">142</span>
+              </div>
+              <div class="stat-icon-wrapper">
+                <i class="fa-solid fa-user-group"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aktivitas Terbaru Table -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Aktivitas Terbaru</h3>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('Data aktivitas telah disinkronkan!')">
+                <i class="fa-solid fa-rotate"></i>
+                <span>Perbarui</span>
+              </button>
+            </div>
+            <div class="table-responsive" style="border: none;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th class="col-no">No</th>
+                    <th>Aktivitas</th>
+                    <th>Tanggal</th>
+                    <th>Oleh</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-aktivitas-tbody">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       Modals
+       ======================================================================== -->
+
+  <!-- Modal: Tambah/Edit Kegiatan -->
+  <div class="modal-overlay" id="modal-kegiatan">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-kegiatan-title">Tambah Kegiatan K3</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-kegiatan')">&times;</button>
+      </div>
+      <form id="form-kegiatan">
+        <div class="modal-body">
+          <input type="hidden" id="modal-kegiatan-id" value="">
+          
+          <div class="form-group">
+            <label class="form-label">Nama Kegiatan <span class="req">*</span></label>
+            <input type="text" id="kegiatan-nama-input" class="form-control" placeholder="Contoh: Sosialisasi Bina Keluarga Balita" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tanggal Pelaksanaan <span class="req">*</span></label>
+            <input type="date" id="kegiatan-tanggal-input" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Lokasi <span class="req">*</span></label>
+            <input type="text" id="kegiatan-lokasi-input" class="form-control" placeholder="Contoh: Kec. Tembalang" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Target / Jumlah Peserta</label>
+            <input type="text" id="kegiatan-peserta-input" class="form-control" placeholder="Contoh: 50 orang">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Deskripsi Kegiatan</label>
+            <textarea id="kegiatan-deskripsi-input" class="form-control" placeholder="Tuliskan tujuan dan ringkasan kegiatan..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Foto Dokumentasi (Opsional)</label>
+            <input type="file" id="kegiatan-foto-upload-input" class="form-control" accept="image/*">
+            <small style="color: var(--text-muted); font-size: 0.8rem;">Unggah foto dokumentasi kegiatan (JPG, PNG, WEBP)</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-kegiatan')">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Kegiatan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Kelola Foto Dokumentasi Kegiatan -->
+  <div class="modal-overlay" id="modal-foto-kegiatan">
+    <div class="modal-dialog" style="max-width: 620px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Kelola Foto Dokumentasi</h3>
+          <div style="font-size: 0.82rem; color: var(--text-muted);" id="modal-foto-keg-title">Nama Kegiatan</div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modal-foto-kegiatan')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="foto-keg-id" value="">
+        <input type="file" id="input-replace-foto-keg" style="display:none;" accept="image/*" onchange="handleReplaceFileSelected(event)">
+
+        <label class="form-label" style="margin-bottom: 0.6rem; font-weight: 700;">Foto Dokumentasi Saat Ini:</label>
+        <div id="modal-foto-current-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; min-height: 80px;">
+          <!-- Populated by JS -->
+        </div>
+
+        <div style="background: var(--surface-alt); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-bottom: 0.85rem;">
+            <i class="fa-solid fa-cloud-arrow-up" style="margin-right: 6px;"></i> Tambah Foto Baru
+          </h4>
+          
+          <div class="form-group" style="margin-bottom: 0.85rem;">
+            <label class="form-label" style="font-size: 0.84rem;">Pilih File Foto dari Perangkat:</label>
+            <input type="file" id="input-file-foto-keg" class="form-control" accept="image/*">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label class="form-label" style="font-size: 0.84rem;">Atau Tempel Tautan Gambar (URL):</label>
+            <input type="url" id="input-url-foto-keg" class="form-control" placeholder="https://images.unsplash.com/...">
+          </div>
+
+          <button type="button" class="btn btn-primary btn-sm" style="width: 100%;" onclick="submitUploadFotoKegiatan()">
+            <i class="fa-solid fa-upload"></i>
+            <span>Unggah & Simpan Foto</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-foto-kegiatan')">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Upload / Edit Dokumen -->
+  <div class="modal-overlay" id="modal-upload-doc">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-upload-doc-title">Upload Dokumen K3</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-upload-doc')">&times;</button>
+      </div>
+      <form id="form-upload-doc">
+        <div class="modal-body">
+          <input type="hidden" id="upload-doc-id" value="">
+          <div class="form-group">
+            <label class="form-label">Pilih Berkas Dokumen</label>
+            <input type="file" id="upload-doc-file" class="form-control" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onchange="if(this.files[0]){document.getElementById('upload-doc-nama').value = this.files[0].name;}">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nama File <span class="req">*</span></label>
+            <input type="text" id="upload-doc-nama" class="form-control" placeholder="Contoh: laporan_tahunan_bkb.pdf" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Judul / Keterangan Dokumen <span class="req">*</span></label>
+            <input type="text" id="upload-doc-judul" class="form-control" placeholder="Contoh: Laporan Tahunan Bina Keluarga Balita" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Kategori Turunan <span class="req">*</span></label>
+            <select id="upload-doc-kategori" class="form-control" required>
+              <option value="BKB">BKB (Bina Keluarga Balita)</option>
+              <option value="BKR">BKR (Bina Keluarga Remaja)</option>
+              <option value="BKL">BKL (Bina Keluarga Lansia)</option>
+              <option value="UPPKA">UPPKA (Ekonomi Akseptor)</option>
+              <option value="PIK-R">PIK-R (Konseling Remaja)</option>
+              <option value="PPKS">PPKS (Pelayanan Sejahtera)</option>
+              <option value="GENRE">GENRE (Generasi Berencana)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Format File <span class="req">*</span></label>
+            <select id="upload-doc-jenis" class="form-control" required>
+              <option value="PDF">PDF (.pdf)</option>
+              <option value="Excel">Excel (.xlsx)</option>
+              <option value="Word">Word (.docx)</option>
+              <option value="PPT">PowerPoint (.pptx)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Ringkasan Dokumen</label>
+            <textarea id="upload-doc-deskripsi" class="form-control" placeholder="Deskripsi isi file..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-upload-doc')">Batal</button>
+          <button type="submit" class="btn btn-primary" id="upload-doc-submit-btn">Unggah Sekarang</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Preview File & Photo Lightbox -->
+  <div class="modal-overlay" id="modal-preview">
+    <div class="modal-dialog" style="max-width: 960px; width: 95%;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="preview-modal-title">Pratinjau</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-preview')">&times;</button>
+      </div>
+      <div class="modal-body" id="preview-modal-content">
+        <!-- Dynamic content -->
+      </div>
+      <div class="modal-footer" id="preview-modal-footer">
+        <button type="button" class="btn btn-primary" onclick="closeModal('modal-preview')">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       Global Footer
+       ======================================================================== -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-copy">
+        &copy; 2025 Disdalduk KB Kota Semarang | Bidang K3 (Ketahanan dan Kesejahteraan Keluarga)
+      </div>
+      <div class="footer-socials">
+        <a href="javascript:void(0)" class="social-icon" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="javascript:void(0)" class="social-icon" title="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="javascript:void(0)" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="javascript:void(0)" class="social-icon" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/xlsx.full.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/handlers.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
