@@ -1,48 +1,68 @@
 /**
  * routes/kegiatan.js
- * REST API endpoints for Kegiatan K3 with Photo Documentation Upload
+ * REST API endpoints untuk Kegiatan K3 (Versi MySQL + Cloudinary)
  */
 
 const express = require('express');
 const router = express.Router();
-const path = require('node:path');
-const fs = require('node:fs');
 const multer = require('multer');
-const db = require('../db/database');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const db = require('../db/database'); // Koneksi MySQL Railway
 
-// Ensure uploads folder exists
-const uploadDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+// ==========================================
+// ⚠️ KONFIGURASI CLOUDINARY
+// Masukkan kunci yang SAMA PERSIS dengan yang ada di dokumen.js
+// ==========================================
+cloudinary.config({
+  cloud_name: 'bxuyqqoh',
+  api_key: '848692597846835',
+  api_secret: 'HsXq53Cv8i8yAYylhy76DQ1dnwc'
+});
 
-// Multer setup for photos
-const photoStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, `keg_${Date.now()}_${Math.round(Math.random() * 1E4)}${ext}`);
+// Setting Multer untuk melempar foto ke Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'webk3_kegiatan', // Beda folder biar rapi di Cloudinary
+    resource_type: 'image'
   }
 });
 
 const uploadPhoto = multer({
-  storage: photoStorage,
-  limits: { fileSize: 10 * 1024 * 1024 }
+  storage: storage,
+  limits: { fileSize: 10 * 1024 * 1024 } // Batas foto 10MB
 });
 
-// GET all kegiatan with optional search, tahun, and lokasi query params (or single by id)
-router.get('/', (req, res) => {
+// Helper for robust date display
+function formatTanggalDisplay(tanggal) {
+  let display = tanggal || '';
+  let yearStr = new Date().getFullYear().toString();
+  if (tanggal && typeof tanggal === 'string' && tanggal.includes('-')) {
+    const parts = tanggal.split('-');
+    if (parts.length === 3) {
+      const y = parseInt(parts[0], 10);
+      const m = parseInt(parts[1], 10) - 1;
+      const d = parseInt(parts[2], 10);
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      display = `${d} ${months[m] || ''} ${y}`;
+      yearStr = `${y}`;
+    }
+  }
+  return { display, yearStr };
+}
+
+// GET all kegiatan
+router.get('/', async (req, res) => {
   try {
     const { search, tahun, lokasi, id } = req.query;
 
-    // Single item fetch via query param: /api/kegiatan?id=...
     if (id) {
-      const row = db.prepare('SELECT * FROM kegiatan WHERE id = ?').get(id);
-      if (!row) {
+      const [rows] = await db.query('SELECT * FROM kegiatan WHERE id = ?', [id]);
+      if (rows.length === 0) {
         return res.status(404).json({ success: false, error: 'Kegiatan tidak ditemukan' });
       }
+      const row = rows[0];
       row.dokumentasi = row.dokumentasi ? JSON.parse(row.dokumentasi) : [];
       return res.json({ success: true, data: row });
     }
@@ -68,7 +88,7 @@ router.get('/', (req, res) => {
 
     query += ' ORDER BY tanggal DESC';
 
-    const rows = db.prepare(query).all(...params);
+    const [rows] = await db.query(query, params);
     const formatted = rows.map(r => ({
       ...r,
       dokumentasi: r.dokumentasi ? JSON.parse(r.dokumentasi) : []
@@ -81,12 +101,13 @@ router.get('/', (req, res) => {
 });
 
 // GET kegiatan by id
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const row = db.prepare('SELECT * FROM kegiatan WHERE id = ?').get(req.params.id);
-    if (!row) {
+    const [rows] = await db.query('SELECT * FROM kegiatan WHERE id = ?', [req.params.id]);
+    if (rows.length === 0) {
       return res.status(404).json({ success: false, error: 'Kegiatan tidak ditemukan' });
     }
+    const row = rows[0];
     row.dokumentasi = row.dokumentasi ? JSON.parse(row.dokumentasi) : [];
     res.json({ success: true, data: row });
   } catch (err) {
@@ -95,30 +116,31 @@ router.get('/:id', (req, res) => {
 });
 
 // POST upload photo to specific kegiatan
-router.post('/upload-foto/:id', uploadPhoto.single('foto'), (req, res) => {
+router.post('/upload-foto/:id', uploadPhoto.single('foto'), async (req, res) => {
   try {
     const kegId = req.params.id;
-    const keg = db.prepare('SELECT * FROM kegiatan WHERE id = ?').get(kegId);
-    if (!keg) {
+    const [rows] = await db.query('SELECT * FROM kegiatan WHERE id = ?', [kegId]);
+    if (rows.length === 0) {
       return res.status(404).json({ success: false, error: 'Kegiatan tidak ditemukan' });
     }
+    const keg = rows[0];
 
     let docs = keg.dokumentasi ? JSON.parse(keg.dokumentasi) : [];
     if (!Array.isArray(docs)) docs = [];
 
     if (req.file) {
-      docs.unshift(`uploads/${req.file.filename}`);
+      docs.unshift(req.file.path); // Mendapatkan URL langsung dari Cloudinary
     } else if (req.body.fotoUrl) {
       docs.unshift(req.body.fotoUrl.trim());
     } else {
       return res.status(400).json({ success: false, error: 'Tidak ada foto yang diunggah' });
     }
 
-    db.prepare('UPDATE kegiatan SET dokumentasi = ? WHERE id = ?')
-      .run(JSON.stringify(docs), kegId);
+    await db.query('UPDATE kegiatan SET dokumentasi = ? WHERE id = ?', [JSON.stringify(docs), kegId]);
 
-    db.prepare('INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)')
-      .run(`Upload foto kegiatan: ${keg.nama}`, 'Hari ini', 'Admin');
+    try {
+      await db.query('INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)', [`Upload foto kegiatan: ${keg.nama}`, 'Hari ini', 'Admin']);
+    } catch (e) {}
 
     res.json({ success: true, message: 'Foto berhasil ditambahkan!', data: docs });
   } catch (err) {
@@ -127,14 +149,16 @@ router.post('/upload-foto/:id', uploadPhoto.single('foto'), (req, res) => {
 });
 
 // POST delete a specific photo from kegiatan
-router.post('/delete-foto/:id', (req, res) => {
+router.post('/delete-foto/:id', async (req, res) => {
   try {
     const kegId = req.params.id;
     const { index, url } = req.body;
-    const keg = db.prepare('SELECT * FROM kegiatan WHERE id = ?').get(kegId);
-    if (!keg) {
+    
+    const [rows] = await db.query('SELECT * FROM kegiatan WHERE id = ?', [kegId]);
+    if (rows.length === 0) {
       return res.status(404).json({ success: false, error: 'Kegiatan tidak ditemukan' });
     }
+    const keg = rows[0];
 
     let docs = keg.dokumentasi ? JSON.parse(keg.dokumentasi) : [];
     if (!Array.isArray(docs)) docs = [];
@@ -145,8 +169,7 @@ router.post('/delete-foto/:id', (req, res) => {
       docs = docs.filter(u => u !== url);
     }
 
-    db.prepare('UPDATE kegiatan SET dokumentasi = ? WHERE id = ?')
-      .run(JSON.stringify(docs), kegId);
+    await db.query('UPDATE kegiatan SET dokumentasi = ? WHERE id = ?', [JSON.stringify(docs), kegId]);
 
     res.json({ success: true, message: 'Foto berhasil dihapus', data: docs });
   } catch (err) {
@@ -155,13 +178,14 @@ router.post('/delete-foto/:id', (req, res) => {
 });
 
 // POST replace a specific photo by index
-router.post('/replace-foto/:id', uploadPhoto.single('foto'), (req, res) => {
+router.post('/replace-foto/:id', uploadPhoto.single('foto'), async (req, res) => {
   try {
     const kegId = req.params.id;
-    const keg = db.prepare('SELECT * FROM kegiatan WHERE id = ?').get(kegId);
-    if (!keg) {
+    const [rows] = await db.query('SELECT * FROM kegiatan WHERE id = ?', [kegId]);
+    if (rows.length === 0) {
       return res.status(404).json({ success: false, error: 'Kegiatan tidak ditemukan' });
     }
+    const keg = rows[0];
 
     let docs = keg.dokumentasi ? JSON.parse(keg.dokumentasi) : [];
     if (!Array.isArray(docs)) docs = [];
@@ -170,16 +194,11 @@ router.post('/replace-foto/:id', uploadPhoto.single('foto'), (req, res) => {
     let newPath = '';
 
     if (req.file) {
-      newPath = `uploads/${req.file.filename}`;
+      newPath = req.file.path; // URL Cloudinary Baru
     } else if (req.body.fotoUrl) {
       newPath = req.body.fotoUrl.trim();
     } else {
       return res.status(400).json({ success: false, error: 'Tidak ada foto yang diunggah' });
-    }
-
-    if (docs[index] && docs[index].startsWith('uploads/')) {
-      const oldPath = path.join(__dirname, '..', docs[index]);
-      if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
     }
 
     if (index >= 0 && index < docs.length) {
@@ -188,11 +207,7 @@ router.post('/replace-foto/:id', uploadPhoto.single('foto'), (req, res) => {
       docs.push(newPath);
     }
 
-    db.prepare('UPDATE kegiatan SET dokumentasi = ? WHERE id = ?')
-      .run(JSON.stringify(docs), kegId);
-
-    db.prepare('INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)')
-      .run(`Ubah foto kegiatan: ${keg.nama}`, 'Hari ini', 'Admin');
+    await db.query('UPDATE kegiatan SET dokumentasi = ? WHERE id = ?', [JSON.stringify(docs), kegId]);
 
     res.json({ success: true, message: 'Foto berhasil diubah!', data: docs });
   } catch (err) {
@@ -200,26 +215,8 @@ router.post('/replace-foto/:id', uploadPhoto.single('foto'), (req, res) => {
   }
 });
 
-// Helper for robust date display
-function formatTanggalDisplay(tanggal) {
-  let display = tanggal || '';
-  let yearStr = new Date().getFullYear().toString();
-  if (tanggal && typeof tanggal === 'string' && tanggal.includes('-')) {
-    const parts = tanggal.split('-');
-    if (parts.length === 3) {
-      const y = parseInt(parts[0], 10);
-      const m = parseInt(parts[1], 10) - 1;
-      const d = parseInt(parts[2], 10);
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-      display = `${d} ${months[m] || ''} ${y}`;
-      yearStr = `${y}`;
-    }
-  }
-  return { display, yearStr };
-}
-
 // POST create kegiatan
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { nama, tanggal, lokasi, peserta, deskripsi, dokumentasi } = req.body;
     if (!nama || !tanggal || !lokasi) {
@@ -229,45 +226,22 @@ router.post('/', (req, res) => {
     const id = req.body.id || ('keg-' + Date.now());
     const { display, yearStr } = formatTanggalDisplay(tanggal);
 
-    const defaultImages = [
-      'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80'
-    ];
-    const docs = dokumentasi || defaultImages;
+    const docs = dokumentasi || [];
 
-    const stmt = db.prepare(`
+    await db.query(`
       INSERT INTO kegiatan (id, nama, tanggal, tanggal_display, tahun, lokasi, peserta, deskripsi, dokumentasi)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
+    `, [id, nama, tanggal, display, yearStr, lokasi, peserta || '50 orang', deskripsi || 'Kegiatan pembinaan K3.', JSON.stringify(docs)]);
 
-    stmt.run(
-      id,
-      nama,
-      tanggal,
-      display,
-      yearStr,
-      lokasi,
-      peserta || '50 orang',
-      deskripsi || 'Kegiatan pembinaan dan edukasi keluarga Kota Semarang.',
-      JSON.stringify(docs)
-    );
-
-    db.prepare('INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)')
-      .run(`Menambah data kegiatan: ${nama}`, display, 'Admin');
+    try {
+      await db.query('INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)', [`Menambah kegiatan: ${nama}`, display, 'Admin']);
+    } catch (e) {}
 
     res.status(201).json({
       success: true,
       message: 'Kegiatan berhasil ditambahkan',
       data: {
-        id,
-        nama,
-        tanggal,
-        tanggal_display: display,
-        tahun: yearStr,
-        lokasi,
-        peserta: peserta || '50 orang',
-        deskripsi: deskripsi || 'Kegiatan pembinaan dan edukasi keluarga Kota Semarang.',
-        dokumentasi: docs
+        id, nama, tanggal, tanggal_display: display, tahun: yearStr, lokasi, peserta, deskripsi, dokumentasi: docs
       }
     });
   } catch (err) {
@@ -275,8 +249,8 @@ router.post('/', (req, res) => {
   }
 });
 
-// PUT update handler (supports /:id and / with query or body id)
-const updateKegiatanHandler = (req, res) => {
+// PUT update handler
+const updateKegiatanHandler = async (req, res) => {
   try {
     const id = req.params.id || req.query.id || (req.body && req.body.id);
     if (!id) {
@@ -286,29 +260,15 @@ const updateKegiatanHandler = (req, res) => {
     const { nama, tanggal, lokasi, peserta, deskripsi, dokumentasi } = req.body;
     const { display, yearStr } = formatTanggalDisplay(tanggal);
 
-    let stmt, result;
     if (dokumentasi) {
-      stmt = db.prepare(`
-        UPDATE kegiatan
-        SET nama = ?, tanggal = ?, tanggal_display = ?, tahun = ?, lokasi = ?, peserta = ?, deskripsi = ?, dokumentasi = ?
-        WHERE id = ?
-      `);
-      result = stmt.run(nama, tanggal, display, yearStr, lokasi, peserta, deskripsi, JSON.stringify(dokumentasi), id);
+      await db.query(`
+        UPDATE kegiatan SET nama = ?, tanggal = ?, tanggal_display = ?, tahun = ?, lokasi = ?, peserta = ?, deskripsi = ?, dokumentasi = ? WHERE id = ?
+      `, [nama, tanggal, display, yearStr, lokasi, peserta, deskripsi, JSON.stringify(dokumentasi), id]);
     } else {
-      stmt = db.prepare(`
-        UPDATE kegiatan
-        SET nama = ?, tanggal = ?, tanggal_display = ?, tahun = ?, lokasi = ?, peserta = ?, deskripsi = ?
-        WHERE id = ?
-      `);
-      result = stmt.run(nama, tanggal, display, yearStr, lokasi, peserta, deskripsi, id);
+      await db.query(`
+        UPDATE kegiatan SET nama = ?, tanggal = ?, tanggal_display = ?, tahun = ?, lokasi = ?, peserta = ?, deskripsi = ? WHERE id = ?
+      `, [nama, tanggal, display, yearStr, lokasi, peserta, deskripsi, id]);
     }
-
-    if (result.changes === 0) {
-      return res.status(404).json({ success: false, error: 'Kegiatan tidak ditemukan' });
-    }
-
-    db.prepare('INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)')
-      .run(`Mengubah data kegiatan: ${nama}`, display, 'Admin');
 
     res.json({ success: true, message: 'Kegiatan berhasil diperbarui' });
   } catch (err) {
@@ -319,24 +279,13 @@ const updateKegiatanHandler = (req, res) => {
 router.put('/:id', updateKegiatanHandler);
 router.put('/', updateKegiatanHandler);
 
-// DELETE kegiatan (supports /:id, /?id=..., and /delete)
-const deleteKegiatanHandler = (req, res) => {
+// DELETE kegiatan
+const deleteKegiatanHandler = async (req, res) => {
   try {
     const id = req.params.id || req.query.id || (req.body && req.body.id);
-    if (!id) {
-      return res.status(400).json({ success: false, error: 'ID Kegiatan dibutuhkan' });
-    }
-    const result = db.prepare('DELETE FROM kegiatan WHERE id = ?').run(id);
-    if (result.changes === 0) {
-      return res.status(404).json({ success: false, error: 'Kegiatan tidak ditemukan' });
-    }
-    try {
-      db.prepare('INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)').run(
-        `Menghapus data kegiatan: ${id}`,
-        'Hari ini',
-        'Admin'
-      );
-    } catch (e) {}
+    if (!id) return res.status(400).json({ success: false, error: 'ID Kegiatan dibutuhkan' });
+    
+    await db.query('DELETE FROM kegiatan WHERE id = ?', [id]);
     res.json({ success: true, message: 'Kegiatan berhasil dihapus' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -345,6 +294,5 @@ const deleteKegiatanHandler = (req, res) => {
 
 router.delete('/:id', deleteKegiatanHandler);
 router.delete('/', deleteKegiatanHandler);
-router.post('/delete', deleteKegiatanHandler);
 
 module.exports = router;
