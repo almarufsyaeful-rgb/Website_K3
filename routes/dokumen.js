@@ -1,6 +1,6 @@
 /**
  * routes/dokumen.js
- * REST API endpoints for Dokumen & Berkas K3 with Multer File Upload
+ * REST API endpoints for Dokumen & Berkas K3 with Multer File Upload (Versi MySQL)
  */
 
 const express = require('express');
@@ -34,15 +34,18 @@ const upload = multer({
   limits: { fileSize: 25 * 1024 * 1024 } // 25MB
 });
 
-// Handler for downloading documents
-const downloadDokumenHandler = (req, res) => {
+// Handler for downloading documents (Diubah ke async)
+const downloadDokumenHandler = async (req, res) => {
   try {
     const id = req.params.id || req.query.id;
     if (!id) {
       return res.status(400).json({ success: false, error: 'ID Dokumen dibutuhkan' });
     }
 
-    const doc = db.prepare('SELECT * FROM dokumen WHERE id = ?').get(id);
+    // MySQL: Ambil data (Array), lalu pilih index 0
+    const [rows] = await db.execute('SELECT * FROM dokumen WHERE id = ?', [id]);
+    const doc = rows[0];
+
     if (!doc) {
       return res.status(404).json({ success: false, error: 'Dokumen tidak ditemukan' });
     }
@@ -67,7 +70,7 @@ router.get('/download/:id', downloadDokumenHandler);
 router.get('/download', downloadDokumenHandler);
 
 // GET all documents
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const { kategori, search, id, download, action } = req.query;
 
@@ -76,7 +79,8 @@ router.get('/', (req, res) => {
     }
 
     if (id) {
-      const r = db.prepare('SELECT * FROM dokumen WHERE id = ?').get(id);
+      const [rows] = await db.execute('SELECT * FROM dokumen WHERE id = ?', [id]);
+      const r = rows[0];
       if (!r) {
         return res.status(404).json({ success: false, error: 'Dokumen tidak ditemukan' });
       }
@@ -115,7 +119,9 @@ router.get('/', (req, res) => {
 
     query += ' ORDER BY created_at DESC';
 
-    const rows = db.prepare(query).all(...params);
+    // MySQL: Gunakan db.query untuk query dinamis
+    const [rows] = await db.query(query, params);
+    
     const formatted = rows.map(r => ({
       id: r.id,
       namaFile: r.nama_file,
@@ -138,9 +144,11 @@ router.get('/', (req, res) => {
 });
 
 // GET document by id
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const r = db.prepare('SELECT * FROM dokumen WHERE id = ?').get(req.params.id);
+    const [rows] = await db.execute('SELECT * FROM dokumen WHERE id = ?', [req.params.id]);
+    const r = rows[0];
+
     if (!r) {
       return res.status(404).json({ success: false, error: 'Dokumen tidak ditemukan' });
     }
@@ -167,8 +175,8 @@ router.get('/:id', (req, res) => {
   }
 });
 
-// POST upload / create document (supports both multipart form with file & JSON body)
-const uploadDocHandler = (req, res) => {
+// POST upload / create document 
+const uploadDocHandler = async (req, res) => {
   try {
     const { namaFile, judul, kategori, jenis, deskripsi, pengunggah } = req.body;
     const file = req.file;
@@ -198,52 +206,35 @@ const uploadDocHandler = (req, res) => {
       : '2.4 MB';
     const id = req.body.id || ('doc-' + Date.now());
 
-    // Format display date
     const now = new Date();
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
     const dateDisplay = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
 
-    const stmt = db.prepare(`
+    // MySQL: Gunakan execute untuk insert
+    await db.execute(`
       INSERT INTO dokumen (id, nama_file, judul, kategori, jenis, icon, icon_color, ukuran, tanggal_upload, pengunggah, deskripsi, file_path)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    stmt.run(
-      id,
-      actualName,
-      docJudul,
-      docKategori,
-      docJenis,
-      icon,
-      iconColor,
-      sizeStr,
-      dateDisplay,
-      pengunggah || 'Admin K3',
-      deskripsi || 'Dokumen resmi Bidang K3 Disdalduk KB Kota Semarang.',
+    `, [
+      id, actualName, docJudul, docKategori, docJenis, icon, iconColor, sizeStr, dateDisplay,
+      pengunggah || 'Admin K3', deskripsi || 'Dokumen resmi Bidang K3 Disdalduk KB Kota Semarang.',
       file ? file.filename : null
-    );
+    ]);
 
-    // Auto log aktivitas
+    // Auto log aktivitas (tambahkan await)
     try {
-      db.prepare('INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)')
-        .run(`Upload dokumen: ${actualName}`, dateDisplay, 'Admin');
+      await db.execute(
+        'INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)',
+        [`Upload dokumen: ${actualName}`, dateDisplay, 'Admin']
+      );
     } catch {}
 
     res.status(201).json({
       success: true,
       message: 'Dokumen berhasil diunggah',
       data: {
-        id,
-        namaFile: actualName,
-        judul: docJudul,
-        kategori: docKategori,
-        jenis: docJenis,
-        icon,
-        iconColor,
-        ukuran: sizeStr,
-        tanggalUpload: dateDisplay,
-        pengunggah: pengunggah || 'Admin K3',
-        deskripsi: deskripsi || 'Dokumen resmi Bidang K3 Disdalduk KB Kota Semarang.',
+        id, namaFile: actualName, judul: docJudul, kategori: docKategori, jenis: docJenis,
+        icon, iconColor, ukuran: sizeStr, tanggalUpload: dateDisplay,
+        pengunggah: pengunggah || 'Admin K3', deskripsi: deskripsi || 'Dokumen resmi Bidang K3 Disdalduk KB Kota Semarang.',
         filePath: file ? file.filename : null
       }
     });
@@ -255,8 +246,8 @@ const uploadDocHandler = (req, res) => {
 router.post('/', upload.single('file'), uploadDocHandler);
 router.post('/upload', upload.single('file'), uploadDocHandler);
 
-// PUT update document (supports /:id and / with query or body id)
-const updateDokumenHandler = (req, res) => {
+// PUT update document
+const updateDokumenHandler = async (req, res) => {
   try {
     const id = req.params.id || req.query.id || (req.body && req.body.id);
     if (!id) {
@@ -271,19 +262,21 @@ const updateDokumenHandler = (req, res) => {
     if (jenis === 'Word') { icon = 'fa-file-word'; iconColor = '#2b579a'; }
     if (jenis === 'PPT') { icon = 'fa-file-powerpoint'; iconColor = '#d24726'; }
 
-    const stmt = db.prepare(`
+    // MySQL: Gunakan execute dan periksa affectedRows
+    const [result] = await db.execute(`
       UPDATE dokumen
       SET nama_file = ?, judul = ?, kategori = ?, jenis = ?, icon = ?, icon_color = ?, deskripsi = ?
       WHERE id = ?
-    `);
+    `, [namaFile, judul, kategori, jenis, icon, iconColor, deskripsi, id]);
 
-    const result = stmt.run(namaFile, judul, kategori, jenis, icon, iconColor, deskripsi, id);
-    if (result.changes === 0) {
+    if (result.affectedRows === 0) {
       return res.status(404).json({ success: false, error: 'Dokumen tidak ditemukan' });
     }
 
-    db.prepare('INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)')
-      .run(`Mengubah dokumen: ${namaFile}`, 'Hari ini', 'Admin');
+    await db.execute(
+      'INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)',
+      [`Mengubah dokumen: ${namaFile}`, 'Hari ini', 'Admin']
+    );
 
     res.json({ success: true, message: 'Dokumen berhasil diperbarui' });
   } catch (err) {
@@ -294,19 +287,23 @@ const updateDokumenHandler = (req, res) => {
 router.put('/:id', updateDokumenHandler);
 router.put('/', updateDokumenHandler);
 
-// DELETE document (supports /:id, /?id=..., and /delete)
-const deleteDokumenHandler = (req, res) => {
+// DELETE document
+const deleteDokumenHandler = async (req, res) => {
   try {
     const id = req.params.id || req.query.id || (req.body && req.body.id);
     if (!id) {
       return res.status(400).json({ success: false, error: 'ID Dokumen dibutuhkan' });
     }
 
-    const doc = db.prepare('SELECT * FROM dokumen WHERE id = ?').get(id);
+    // Ambil data file dulu sebelum dihapus (untuk menghapus fisik filenya)
+    const [rows] = await db.execute('SELECT * FROM dokumen WHERE id = ?', [id]);
+    const doc = rows[0];
+
     if (!doc) {
       return res.status(404).json({ success: false, error: 'Dokumen tidak ditemukan' });
     }
 
+    // Hapus file fisik (Tetap menggunakan module fs bawaan Node)
     if (doc.file_path) {
       const fullPath = path.join(uploadDir, doc.file_path);
       if (fs.existsSync(fullPath)) {
@@ -314,11 +311,14 @@ const deleteDokumenHandler = (req, res) => {
       }
     }
 
-    db.prepare('DELETE FROM dokumen WHERE id = ?').run(id);
+    // MySQL: Hapus dari database
+    await db.execute('DELETE FROM dokumen WHERE id = ?', [id]);
 
     try {
-      db.prepare('INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)')
-        .run(`Menghapus dokumen: ${doc.nama_file}`, 'Hari ini', 'Admin');
+      await db.execute(
+        'INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)',
+        [`Menghapus dokumen: ${doc.nama_file}`, 'Hari ini', 'Admin']
+      );
     } catch {}
 
     res.json({ success: true, message: 'Dokumen berhasil dihapus' });

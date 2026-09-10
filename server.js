@@ -1,14 +1,15 @@
 /**
  * server.js
  * Main Express.js server for Disdalduk KB Kota Semarang - Bidang K3
- * Provides RESTful APIs and serves static frontend web assets
  */
+
+require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
 const path = require('node:path');
 
-// Initialize database
+// Initialize database (Hanya panggil ini 1 kali saja)
 const db = require('./db/database');
 
 const app = express();
@@ -25,7 +26,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Intercept .php endpoints if called on Node.js to prevent serving raw PHP source
+// Intercept .php endpoints 
 app.use((req, res, next) => {
   if (req.path.endsWith('.php')) {
     if (req.path.includes('dokumen.php')) {
@@ -54,7 +55,7 @@ app.use('/api/admin', require('./routes/stats'));
 // Explicitly serve uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Serve static frontend files (excluding .php files)
+// Serve static frontend files
 app.use((req, res, next) => {
   if (req.path.endsWith('.php')) {
     return res.status(404).send('File not found');
@@ -64,9 +65,9 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname)));
 
 // Alias route for news
-app.get('/api/news', (req, res) => {
+app.get('/api/news', async (req, res) => {
   try {
-    const rows = db.prepare('SELECT * FROM news ORDER BY id ASC').all();
+    const [rows] = await db.query('SELECT * FROM news ORDER BY id ASC');
     res.json({ success: true, data: rows });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -82,7 +83,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// SPA Fallback: send index.html for any unhandled GET route that is not /api
+// SPA Fallback
 app.use((req, res, next) => {
   if (req.method === 'GET' && !req.path.startsWith('/api')) {
     return res.sendFile(path.join(__dirname, 'index.html'));
