@@ -631,7 +631,7 @@ async function renderFilePreview(doc, containerEl, tabsContainerEl) {
 
   if (tabsContainerEl) tabsContainerEl.innerHTML = '';
 
-  const fileUrl = filePath ? `/uploads/${filePath}` : null;
+  const fileUrl = filePath ? filePath : null;
 
   if (isExcel) {
     containerEl.innerHTML = `
