@@ -1,16 +1,18 @@
 <?php
 /**
- * api/programs.php
- * REST API for Program K3 (PHP & MySQL)
+ * routes/programs.php
+ * REST API untuk Program K3 (Versi PHP / XAMPP MySQL)
+ * Menggantikan routes/programs.js untuk lingkungan PHP
  */
 
-require_once __DIR__ . '/config/database.php';
+// Muat konfigurasi database XAMPP
+require_once __DIR__ . '/../api/config/database.php';
 
 $database = new Database();
 $db = $database->getConnection();
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Parse JSON input if available
+// Membaca payload input (baik JSON body maupun form POST)
 $rawInput = file_get_contents('php://input');
 $jsonInput = !empty($rawInput) ? json_decode($rawInput, true) : [];
 $input = is_array($jsonInput) && !empty($jsonInput) ? $jsonInput : $_POST;
@@ -18,7 +20,9 @@ $input = is_array($jsonInput) && !empty($jsonInput) ? $jsonInput : $_POST;
 $action = $_GET['action'] ?? $input['action'] ?? null;
 $reqId = $_GET['id'] ?? $input['id'] ?? null;
 
-// GET: All or by ID
+// =========================================================================
+// 1. GET: Ambil Semua Program atau Program Berdasarkan ID (?id=...)
+// =========================================================================
 if ($method === 'GET') {
     if (!empty($_GET['id'])) {
         $stmt = $db->prepare("SELECT * FROM programs WHERE id = ?");
@@ -27,63 +31,41 @@ if ($method === 'GET') {
         if (!$prog) {
             sendJsonResponse(["success" => false, "error" => "Program tidak ditemukan"], 404);
         }
-        $prog['kegiatanTerkait'] = !empty($prog['kegiatan_terkait']) ? json_decode($prog['kegiatan_terkait']) : [];
+        $prog['kegiatanTerkait'] = !empty($prog['kegiatan_terkait']) 
+            ? json_decode($prog['kegiatan_terkait'], true) 
+            : [];
         sendJsonResponse(["success" => true, "data" => $prog]);
     } else {
         $stmt = $db->query("SELECT * FROM programs ORDER BY id ASC");
         $rows = $stmt->fetchAll();
         foreach ($rows as &$r) {
-            $r['kegiatanTerkait'] = !empty($r['kegiatan_terkait']) ? json_decode($r['kegiatan_terkait']) : [];
+            $r['kegiatanTerkait'] = !empty($r['kegiatan_terkait']) 
+                ? json_decode($r['kegiatan_terkait'], true) 
+                : [];
         }
         sendJsonResponse(["success" => true, "data" => $rows]);
     }
 }
 
-// POST: Create or Fallback Action
+// =========================================================================
+// 2. POST: Tambah Program Baru (atau Fallback Action)
+// =========================================================================
 if ($method === 'POST') {
+    // Fallback Hapus via POST (action=delete)
     if ($action === 'delete' || $action === 'delete_program') {
-        $delId = $reqId;
-        if (!$delId) {
+        if (!$reqId) {
             sendJsonResponse(["success" => false, "error" => "ID Program dibutuhkan"], 400);
         }
         $stmt = $db->prepare("DELETE FROM programs WHERE id = ?");
-        $stmt->execute([$delId]);
+        $stmt->execute([$reqId]);
         try {
-            $logStmt = $db->prepare("INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)");
-            $logStmt->execute(["Menghapus program ID: {$delId}", "Hari ini", "Admin"]);
+            $log = $db->prepare("INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)");
+            $log->execute(["Menghapus program ID: {$reqId}", "Hari ini", "Admin"]);
         } catch (Exception $e) {}
         sendJsonResponse(["success" => true, "message" => "Program berhasil dihapus"]);
     }
 
-    if ($action === 'update' || $action === 'update_program') {
-        $upId = $reqId;
-        if (!$upId) {
-            sendJsonResponse(["success" => false, "error" => "ID Program dibutuhkan"], 400);
-        }
-        $stmt = $db->prepare("
-            UPDATE programs
-            SET nama = ?, kategori = ?, deskripsi = ?, ringkasan = ?, pelaksana = ?, tahun = ?, icon = ?, kegiatan_terkait = ?
-            WHERE id = ?
-        ");
-        $stmt->execute([
-            $input['nama'] ?? '',
-            $input['kategori'] ?? '',
-            $input['deskripsi'] ?? '',
-            $input['ringkasan'] ?? ($input['deskripsi'] ?? ''),
-            $input['pelaksana'] ?? 'Bidang K3',
-            $input['tahun'] ?? 2025,
-            $input['icon'] ?? 'fa-shield-heart',
-            json_encode($input['kegiatanTerkait'] ?? []),
-            $upId
-        ]);
-        try {
-            $logStmt = $db->prepare("INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)");
-            $logStmt->execute(["Mengubah data program: " . ($input['nama'] ?? $upId), "Hari ini", "Admin"]);
-        } catch (Exception $e) {}
-        sendJsonResponse(["success" => true, "message" => "Program berhasil diperbarui"]);
-    }
-
-    // Standard Create
+    // Validasi Kolom Wajib
     if (empty($input['nama']) || empty($input['kategori'])) {
         sendJsonResponse(["success" => false, "error" => "Nama dan kategori wajib diisi"], 400);
     }
@@ -104,16 +86,22 @@ if ($method === 'POST') {
     ");
     $stmt->execute([$id, $nama, $kategori, $deskripsi, $ringkasan, $pelaksana, $tahun, $icon, $kegiatanTerkait]);
 
-    // Log activity
+    // Catat log aktivitas
     try {
-        $logStmt = $db->prepare("INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)");
-        $logStmt->execute(["Menambah program baru: {$nama}", "Hari ini", "Admin"]);
+        $log = $db->prepare("INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)");
+        $log->execute(["Menambah program baru: {$nama}", "Hari ini", "Admin"]);
     } catch (Exception $e) {}
 
-    sendJsonResponse(["success" => true, "message" => "Program berhasil dibuat", "data" => ["id" => $id, "nama" => $nama]], 201);
+    sendJsonResponse([
+        "success" => true,
+        "message" => "Program berhasil dibuat",
+        "data" => ["id" => $id, "nama" => $nama]
+    ], 201);
 }
 
-// PUT: Update
+// =========================================================================
+// 3. PUT: Perbarui Program
+// =========================================================================
 if ($method === 'PUT') {
     $id = $reqId;
     if (!$id) {
@@ -138,14 +126,16 @@ if ($method === 'PUT') {
     ]);
 
     try {
-        $logStmt = $db->prepare("INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)");
-        $logStmt->execute(["Mengubah data program: " . ($input['nama'] ?? $id), "Hari ini", "Admin"]);
+        $log = $db->prepare("INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)");
+        $log->execute(["Mengubah data program: " . ($input['nama'] ?? $id), "Hari ini", "Admin"]);
     } catch (Exception $e) {}
 
     sendJsonResponse(["success" => true, "message" => "Program berhasil diperbarui"]);
 }
 
-// DELETE: Delete
+// =========================================================================
+// 4. DELETE: Hapus Program
+// =========================================================================
 if ($method === 'DELETE') {
     $id = $reqId;
     if (!$id) {
@@ -156,8 +146,8 @@ if ($method === 'DELETE') {
     $stmt->execute([$id]);
 
     try {
-        $logStmt = $db->prepare("INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)");
-        $logStmt->execute(["Menghapus program ID: {$id}", "Hari ini", "Admin"]);
+        $log = $db->prepare("INSERT INTO aktivitas (aktivitas, tanggal, oleh) VALUES (?, ?, ?)");
+        $log->execute(["Menghapus program ID: {$id}", "Hari ini", "Admin"]);
     } catch (Exception $e) {}
 
     sendJsonResponse(["success" => true, "message" => "Program berhasil dihapus"]);
