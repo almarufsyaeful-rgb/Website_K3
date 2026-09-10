@@ -774,7 +774,6 @@ async function downloadDocumentFile(id, filename) {
   showToast(`Menyiapkan unduhan: ${filename || 'dokumen'}...`);
   
   try {
-    // 1. Cari data dokumen berdasarkan ID dari database lokal (AppState)
     const doc = window.AppState.dokumen.find(d => d.id === id);
     
     if (!doc || !doc.filePath) {
@@ -782,23 +781,13 @@ async function downloadDocumentFile(id, filename) {
       return;
     }
 
-    // 2. Ambil link Cloudinary aslinya
-    let downloadUrl = doc.filePath;
+    // Ambil link asli dari database TANPA diubah-ubah sama sekali
+    const downloadUrl = doc.filePath;
 
-    // 3. Tambahkan "fl_attachment" agar Cloudinary memaksa browser untuk langsung DOWNLOAD (bukan hanya preview)
-    // Cloudinary URL contoh: https://res.cloudinary.com/nama-cloud/image/upload/v12345/folder/file.pdf
-    if (downloadUrl.includes('res.cloudinary.com')) {
-      const uploadIndex = downloadUrl.indexOf('/upload/');
-      if (uploadIndex !== -1) {
-        // Sisipkan parameter fl_attachment ke dalam URL
-        downloadUrl = downloadUrl.slice(0, uploadIndex + 8) + 'fl_attachment/' + downloadUrl.slice(uploadIndex + 8);
-      }
-    }
-
-    // 4. Eksekusi proses unduh dengan paksa tab baru
+    // Buka link di tab baru. Cloudinary akan otomatis mendownload file Excel/Word-nya
     const link = document.createElement('a');
     link.href = downloadUrl;
-    link.target = "_blank"; // Buka di tab baru (wajib untuk file eksternal)
+    link.target = "_blank"; 
     
     if (filename) link.setAttribute('download', filename);
     document.body.appendChild(link);
